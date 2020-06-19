@@ -49,8 +49,34 @@ app.get('/users/comments/filter/', (req, res) => {
     });
   }
   if (query.date) {
-    const queryDate =`${query.date} 00:00:00`
+    const queryDate = `${query.date} 00:00:00`
     connection.query('SELECT comment from Users WHERE date > ?', queryDate, (err, results) => {
+      if (err) {
+        return (
+          res.status(500).json({ message: 'No body was here..' })
+        )
+      }
+      res.json(results);
+    });
+  }
+});
+
+app.get('/users/date/:order', (req, res) => {
+  const { order } = req.params
+  if (order === 'asc') {
+    connection.query('SELECT * from Users ORDER BY date asc', order, (err, results) => {
+      console.log(err)
+      if (err) {
+        return (
+          res.status(500).json({ message: 'No body was here..' })
+        )
+      }
+      res.json(results);
+    });
+  }
+  if (order === 'desc') {
+    connection.query('SELECT * from Users ORDER BY date desc', order, (err, results) => {
+      console.log(err)
       if (err) {
         return (
           res.status(500).json({ message: 'No body was here..' })
