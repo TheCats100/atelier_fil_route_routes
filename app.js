@@ -104,6 +104,19 @@ app.post('/users', (req, res) => {
   });
 });
 
+app.put('/users/:id', (req, res) => {
+  const formData = req.body
+  const { id } = req.params
+  connection.query('UPDATE Users SET ? WHERE id = ?', [formData, id], (err, results) => {
+    if (err) {
+      return (
+        res.status(500).json({message: "Erreur lors de la sauvegarde d'un users"})
+      )
+    }
+    res.status(200).json({message: `Changed row ${results.changedRows}`});
+  });
+});
+
 app.put('/users/:id/bool', (req, res) => {
   const formData = req.body
   const { id } = req.params
