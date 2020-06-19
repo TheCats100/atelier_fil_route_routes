@@ -87,4 +87,21 @@ app.get('/users/date/:order', (req, res) => {
   }
 });
 
+app.post('/users', (req, res) => {
+  const formData = req.body
+  if (formData.comment == null || formData.date == null || formData.connected == null) {
+    return (
+      res.status(400).json({message: "Necessary fields are empty"})
+    )
+  }
+  connection.query('INSERT INTO Users SET ?', formData, (err, results) => {
+    if (err) {
+      return (
+        res.status(500).json({message: "Erreur lors de la sauvegarde d'un users"})
+      )
+    }
+    res.status(201).json({ ...formData, id: results.insertId })
+  });
+});
+
 module.exports = app; 

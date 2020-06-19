@@ -1,0 +1,9 @@
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "comment": "je suis un commentaire",
+    "date": "2005-04-02",
+    "connected": "0"
+}
