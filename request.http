@@ -14,3 +14,7 @@ Content-Type: application/json
 {
     "connected": "0"
 }
+###
+DELETE http://localhost:3000/users/7
+###
+DELETE http://localhost:3000/users/bool/all

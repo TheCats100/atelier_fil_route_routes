@@ -91,13 +91,13 @@ app.post('/users', (req, res) => {
   const formData = req.body
   if (formData.comment == null || formData.date == null || formData.connected == null) {
     return (
-      res.status(400).json({message: "Necessary fields are empty"})
+      res.status(400).json({ message: "Necessary fields are empty" })
     )
   }
   connection.query('INSERT INTO Users SET ?', formData, (err, results) => {
     if (err) {
       return (
-        res.status(500).json({message: "Erreur lors de la sauvegarde d'un users"})
+        res.status(500).json({ message: "Erreur lors de la sauvegarde d'un users" })
       )
     }
     res.status(201).json({ ...formData, id: results.insertId })
@@ -110,10 +110,10 @@ app.put('/users/:id', (req, res) => {
   connection.query('UPDATE Users SET ? WHERE id = ?', [formData, id], (err, results) => {
     if (err) {
       return (
-        res.status(500).json({message: "Erreur lors de la sauvegarde d'un users"})
+        res.status(500).json({ message: "Erreur lors de la sauvegarde d'un users" })
       )
     }
-    res.status(200).json({message: `Changed row ${results.changedRows}`});
+    res.status(200).json({ message: `Changed row ${results.changedRows}` });
   });
 });
 
@@ -123,10 +123,34 @@ app.put('/users/:id/bool', (req, res) => {
   connection.query('UPDATE Users SET ? WHERE id = ?', [formData, id], (err, results) => {
     if (err) {
       return (
-        res.status(500).json({message: "Erreur lors de la sauvegarde d'un users"})
+        res.status(500).json({ message: "Erreur lors de la sauvegarde d'un users" })
       )
     }
-    res.status(200).json({message: `Changed row ${results.changedRows}`});
+    res.status(200).json({ message: `Changed row ${results.changedRows}` });
+  });
+});
+
+app.delete('/users/:id', (req, res) => {
+  const { id } = req.params;
+
+  connection.query('DELETE from Users WHERE id = ?', id, (err) => {
+    if (err) {
+      return (
+        res.status(500).json({ message: "Internal server error" })
+      )
+    }
+    res.sendStatus(200);
+  });
+});
+
+app.delete('/users/bool/all', (req, res) => {
+  connection.query('DELETE from Users WHERE connected = 0', (err) => {
+    if (err) {
+      return (
+        res.status(500).json({ message: "Internal server error" })
+      )
+    }
+    res.sendStatus(200);
   });
 });
 
